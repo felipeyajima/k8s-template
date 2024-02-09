@@ -1,3 +1,4 @@
+/*
 resource "kubernetes_deployment" "nginx" {
   metadata {
     name = "scalable-nginx-example"
@@ -42,4 +43,5 @@ resource "kubernetes_deployment" "nginx" {
       }
     }
   }
-}
+
+*/
