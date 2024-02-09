@@ -1,3 +1,5 @@
+
+/*
 resource "helm_release" "nginx_ingress" {
   name       = "nginx-ingress-controller"
 
@@ -10,7 +12,7 @@ resource "helm_release" "nginx_ingress" {
   }
 }
 
-/*
+
 resource "kubernetes_deployment" "nginx" {
   metadata {
     name = "scalable-nginx-example"
