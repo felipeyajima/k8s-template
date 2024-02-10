@@ -4,6 +4,7 @@ resource "helm_release" "prometheus" {
   namespace  = "prometheus"
   repository = "https://prometheus-community.github.io/helm-charts"
   version    = "25.11.0"
+  create_namespace = true
 
   set {
     name  = "podSecurityPolicy.enabled"
