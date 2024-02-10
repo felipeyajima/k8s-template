@@ -1,3 +1,5 @@
+
+/*
 resource "helm_release" "prometheus" {
   chart      = "prometheus"
   name       = "prometheus"
@@ -32,3 +34,4 @@ resource "helm_release" "prometheus" {
     })
   }
 }
+*/
