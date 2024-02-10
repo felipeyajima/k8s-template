@@ -1,61 +1,32 @@
-
-/*
-resource "helm_release" "nginx_ingress" {
-  name       = "nginx-ingress-controller"
-
-  repository = "https://charts.bitnami.com/bitnami"
-  chart      = "nginx-ingress-controller"
+resource "helm_release" "prometheus" {
+  chart      = "prometheus"
+  name       = "prometheus"
+  namespace  = "prometheus"
+  repository = "https://prometheus-community.github.io/helm-charts"
+  version    = "25.11.0"
 
   set {
-    name  = "service.type"
-    value = "ClusterIP"
+    name  = "podSecurityPolicy.enabled"
+    value = true
+  }
+
+  set {
+    name  = "server.persistentVolume.enabled"
+    value = false
+  }
+
+  # You can provide a map of value using yamlencode. Don't forget to escape the last element after point in the name
+  set {
+    name = "server\\.resources"
+    value = yamlencode({
+      limits = {
+        cpu    = "300m"
+        memory = "200Mi"
+      }
+      requests = {
+        cpu    = "100m"
+        memory = "30Mi"
+      }
+    })
   }
 }
-
-
-resource "kubernetes_deployment" "nginx" {
-  metadata {
-    name = "scalable-nginx-example"
-    labels = {
-      App = "ScalableNginxExample"
-    }
-  }
-
-  spec {
-    replicas = 2
-    selector {
-      match_labels = {
-        App = "ScalableNginxExample"
-      }
-    }
-    template {
-      metadata {
-        labels = {
-          App = "ScalableNginxExample"
-        }
-      }
-      spec {
-        container {
-          image = "nginx:1.7.8"
-          name  = "example"
-
-          port {
-            container_port = 80
-          }
-
-          resources {
-            limits = {
-              cpu    = "0.5"
-              memory = "512Mi"
-            }
-            requests = {
-              cpu    = "250m"
-              memory = "50Mi"
-            }
-          }
-        }
-      }
-    }
-  }
-
-*/
