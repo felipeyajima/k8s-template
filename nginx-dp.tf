@@ -1,13 +1,11 @@
-
-/*
 resource "helm_release" "prometheus" {
   chart      = "prometheus"
   name       = "prometheus"
   namespace  = "prometheus"
   repository = "https://prometheus-community.github.io/helm-charts"
-  version    = "25.11.0"
+  version    = "15.5.3"
   create_namespace = true
-  timeout = "900"
+  timeout = "600"
 
   set {
     name  = "podSecurityPolicy.enabled"
@@ -34,4 +32,4 @@ resource "helm_release" "prometheus" {
     })
   }
 }
-*/
+
