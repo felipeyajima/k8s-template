@@ -9,4 +9,12 @@ resource "helm_release" "otel-collector" {
     name  = "mode"
     value = "daemonset"
   }
+  set {
+    name  = "image.repository"
+    value = "ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-k8s"
+  }
+  set {
+    name  = "command.name"
+    value = "otelcol-k8s"
+  }
 }
