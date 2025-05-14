@@ -1,3 +1,3 @@
-module "helm_release" {
-  source = "./modules/helm_release"
+module "open-telemetry" {
+  source = "./open-telemetry/otel-collector"
 }
