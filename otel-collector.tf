@@ -3,7 +3,7 @@ resource "helm_release" "otel-collector" {
   namespace  = "monitoring"
   version    = "0.122.5"
   repository = "https://open-telemetry.github.io/opentelemetry-helm-charts"
-  chart      = "open-telemetry/opentelemetry-collector"
+  chart      = "opentelemetry-collector"
   create_namespace = true
   set {
     name  = "mode"
