@@ -6,7 +6,7 @@ resource "helm_release" "otel-collector" {
   chart      = "opentelemetry-collector"
   create_namespace = true
   values = [
-    file("${path.module}/otel-values.yaml")
+    file("${path.module}/otel-collector-values.yaml")
   ]
 
   set {
