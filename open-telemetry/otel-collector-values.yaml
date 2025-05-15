@@ -27,8 +27,8 @@ presets:
   # Best used with mode = daemonset.
   # See https://opentelemetry.io/docs/kubernetes/collector/components/#filelog-receiver for details on the receiver.
   logsCollection:
-    enabled: false
-    includeCollectorLogs: false
+    enabled: true
+    includeCollectorLogs: true
     # Enabling this writes checkpoints in /var/lib/otelcol/ host directory.
     # Note this changes collector's user to root, so that it can write to host directory.
     storeCheckpoints: false
@@ -126,6 +126,8 @@ internalTelemetryViaOTLP:
 # For example, {{ REDACTED_EMAIL }} becomes {{` {{ REDACTED_EMAIL }} `}}.
 config:
   exporters:
+    otlp:
+      endpoint: https://insight-logs-prod-sa-east-1.grafana.net
     debug: {}
   extensions:
     # The health_check extension is mandatory for this chart.
