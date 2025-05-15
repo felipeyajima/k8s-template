@@ -127,7 +127,7 @@ internalTelemetryViaOTLP:
 config:
   exporters:
     otlp:
-      endpoint: https://insight-logs-prod-sa-east-1.grafana.net
+      endpoint: https://otlp-gateway-prod-sa-east-1.grafana.net/otlp:443
     debug: {}
   extensions:
     # The health_check extension is mandatory for this chart.
