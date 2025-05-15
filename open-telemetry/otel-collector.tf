@@ -8,4 +8,12 @@ resource "helm_release" "otel-collector" {
   values = [
     file("${path.module}/otel-collector-values.yaml")
   ]
+  set {
+    name  = "config.extensions.client_auth.username"
+    value = var.replica_count
+  }
+  set {
+    name  = "config.extensions.client_auth.password"
+    value = var.replica_count
+  }
 }
