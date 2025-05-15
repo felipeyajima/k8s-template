@@ -1,24 +1,20 @@
 variable "host" {
   description = "Host do K8s"
-  type        = string
   sensitive   = true
 }
 
 variable "client_certificate" {
   description = "Certificado do K8s"
-  type        = string
   sensitive   = true
 }
 
 variable "client_key" {
   description = "Client Key do K8s"
-  type        = string
   sensitive   = true
 }
 
 variable "cluster_ca_certificate" {
   description = "CA do K8s"
-  type        = string
   sensitive   = true
 }
 
