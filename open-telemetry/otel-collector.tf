@@ -10,10 +10,10 @@ resource "helm_release" "otel-collector" {
   ]
   set {
     name  = "config.extensions.client_auth.username"
-    value = var.replica_count
+    value = var.grafana_cloud_instance_id
   }
   set {
     name  = "config.extensions.client_auth.password"
-    value = var.replica_count
+    value = var.grafana_cloud_api_key
   }
 }
