@@ -478,7 +478,7 @@ livenessProbe:
   # terminationGracePeriodSeconds: 10
   httpGet:
     port: 13133
-    path: /health/status
+    path: /
 
 # readiness probe configuration
 # Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
@@ -496,7 +496,7 @@ readinessProbe:
   # failureThreshold: 1
   httpGet:
     port: 13133
-    path: /health/status
+    path: /
 
 # startup probe configuration
 # Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
