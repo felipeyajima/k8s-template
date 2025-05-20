@@ -33,5 +33,9 @@ resource "helm_release" "otel-collector" {
     name  = "command.name"
     value = "otelcol-contrib"
   }
+  set {
+    name  = "command.name"
+    value = "otelcol-contrib"
+  }
 
 }
