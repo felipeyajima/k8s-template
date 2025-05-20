@@ -140,8 +140,25 @@ config:
     # The health_check extension is mandatory for this chart.
     # Without the health_check extension the collector will fail the readiness and liveliness probes.
     # The health_check extension can be modified, but should never be removed.
-    health_check:
-      endpoint: ${env:MY_POD_IP}:13133
+    #health_check:
+      #endpoint: ${env:MY_POD_IP}:13133
+    healthcheckv2:
+      use_v2: true
+      component_health:
+        include_permanent_errors: false
+        include_recoverable_errors: true
+        recovery_duration: 5m
+      http:
+        endpoint: "localhost:13133"
+        status:
+          enabled: true
+          path: "/health/status"
+        config:
+          enabled: true
+          path: "/health/config"
+      grpc:
+        endpoint: "localhost:13132"
+        transport: "tcp"  
   processors:
     batch: {}
     # Default memory limiter configuration for the collector based on k8s resource limits.
@@ -478,7 +495,7 @@ livenessProbe:
   # terminationGracePeriodSeconds: 10
   httpGet:
     port: 13133
-    path: /
+    path: /health/status
 
 # readiness probe configuration
 # Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
@@ -496,7 +513,7 @@ readinessProbe:
   # failureThreshold: 1
   httpGet:
     port: 13133
-    path: /
+    path: /health/status
 
 # startup probe configuration
 # Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
