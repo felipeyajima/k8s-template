@@ -12,6 +12,10 @@ resource "helm_release" "otel-collector" {
     name  = "mode"
     value = "daemonset"
   }
+  set {
+    name  = "image.repository"
+    value = "otel/opentelemetry-collector-contrib"
+  }
   #set {
   #  name  = "config.exporters.otlphttp/grafana_cloud.endpoint"
   #  value = "https://otlp-gateway-prod-sa-east-1.grafana.net/otlp:443"
