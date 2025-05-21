@@ -16,22 +16,22 @@ resource "helm_release" "otel-collector" {
     name  = "image.repository"
     value = "otel/opentelemetry-collector-contrib"
   }
-  #set {
-  #  name  = "config.exporters.otlphttp/grafana_cloud.endpoint"
-  #  value = "https://otlp-gateway-prod-sa-east-1.grafana.net/otlp:443"
-  #}
-  #set {
-  #  name  = "config.exporters.otlphttp/grafana_cloud.auth.authenticator"
-  #  value = "basicauth/grafana_cloud"
-  #}
-  #set {
-  #  name  = "config.extensions.client_auth.username"
-  #  value = var.grafana_cloud_instance_id
-  #}
-  #set {
-  #  name  = "config.extensions.client_auth.password"
-  #  value = var.grafana_cloud_api_key
-  #}
+  set {
+    name  = "config.exporters.otlphttp/grafana_cloud.endpoint"
+    value = "https://otlp-gateway-prod-sa-east-1.grafana.net/otlp:443"
+  }
+  set {
+    name  = "config.exporters.otlphttp/grafana_cloud.auth.authenticator"
+    value = "basicauth/grafana_cloud"
+  }
+  set {
+    name  = "config.extensions.client_auth.username"
+    value = var.grafana_cloud_instance_id
+  }
+  set {
+    name  = "config.extensions.client_auth.password"
+    value = var.grafana_cloud_api_key
+  }
 
   #set {
   #  name  = "command.name"
