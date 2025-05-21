@@ -141,10 +141,68 @@ config:
     # Without the health_check extension the collector will fail the readiness and liveliness probes.
     # The health_check extension can be modified, but should never be removed.
     health_check:
-      endpoint: ${env:MY_POD_IP}:13133  
+      endpoint: ${env:MY_POD_IP}:13133
+  #### added to grafana cloud    
+  connectors:
+    grafanacloud:
+      # https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/connector/grafanacloudconnector
+      host_identifiers: ["host.name"]
+#### final added to grafana cloud
   processors:
     batch: {}
-    # Default memory limiter configuration for the collector based on k8s resource limits.
+    ##### added to grafana cloud #####
+    resourcedetection:
+      detectors: ["env", "system"]
+      override: false
+    transform/drop_unneeded_resource_attributes:
+    # https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/transformprocessor
+      error_mode: ignore
+      trace_statements:
+        - context: resource
+          statements:
+            - delete_key(attributes, "k8s.pod.start_time")
+            - delete_key(attributes, "os.description")
+            - delete_key(attributes, "os.type")
+            - delete_key(attributes, "process.command_args")
+            - delete_key(attributes, "process.executable.path")
+            - delete_key(attributes, "process.pid")
+            - delete_key(attributes, "process.runtime.description")
+            - delete_key(attributes, "process.runtime.name")
+            - delete_key(attributes, "process.runtime.version")
+      metric_statements:
+        - context: resource
+          statements:
+            - delete_key(attributes, "k8s.pod.start_time")
+            - delete_key(attributes, "os.description")
+            - delete_key(attributes, "os.type")
+            - delete_key(attributes, "process.command_args")
+            - delete_key(attributes, "process.executable.path")
+            - delete_key(attributes, "process.pid")
+            - delete_key(attributes, "process.runtime.description")
+            - delete_key(attributes, "process.runtime.name")
+            - delete_key(attributes, "process.runtime.version")
+      log_statements:
+        - context: resource
+          statements:
+            - delete_key(attributes, "k8s.pod.start_time")
+            - delete_key(attributes, "os.description")
+            - delete_key(attributes, "os.type")
+            - delete_key(attributes, "process.command_args")
+            - delete_key(attributes, "process.executable.path")
+            - delete_key(attributes, "process.pid")
+            - delete_key(attributes, "process.runtime.description")
+            - delete_key(attributes, "process.runtime.name")
+            - delete_key(attributes, "process.runtime.version")
+    transform/add_resource_attributes_as_metric_attributes:
+      # https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/transformprocessor
+      error_mode: ignore
+      metric_statements:
+        - context: datapoint
+          statements:
+            - set(attributes["deployment.environment"], resource.attributes["deployment.environment"])
+            - set(attributes["service.version"], resource.attributes["service.version"])  
+      # Default memory limiter configuration for the collector based on k8s resource limits.
+    ###### final added grafana cloud #####
     memory_limiter:
       # check_interval is the time between measurements of memory usage.
       check_interval: 5s
@@ -189,35 +247,68 @@ config:
                   port: 8888
     extensions:
       - health_check
+      - basicauth/grafana_cloud
     pipelines:
-      logs:
-        exporters:
-          - debug
-        processors:
-          - memory_limiter
-          - batch
-        receivers:
-          - otlp
-      metrics:
-        exporters:
-          - debug
-        processors:
-          - memory_limiter
-          - batch
-        receivers:
-          - otlp
-          # if internalTelemetryViaOTLP.metrics.enabled = true, prometheus receiver will be removed
-          - prometheus
+    ##### added to grafana cloud
       traces:
-        exporters:
-          - debug
+        receivers: [otlp]
         processors:
-          - memory_limiter
-          - batch
-        receivers:
-          - otlp
-          - jaeger
-          - zipkin
+          [resourcedetection, transform/drop_unneeded_resource_attributes, batch]
+        exporters: [otlphttp/grafana_cloud, grafanacloud]
+      metrics:
+        receivers: [otlp, hostmetrics]
+        processors:
+          [
+            resourcedetection,
+            transform/drop_unneeded_resource_attributes,
+            transform/add_resource_attributes_as_metric_attributes,
+            batch,
+          ]
+        exporters: [otlphttp/grafana_cloud]
+      metrics/grafanacloud:
+        receivers: [grafanacloud]
+        processors: [batch]
+        exporters: [otlphttp/grafana_cloud]
+      logs:
+        receivers: [otlp]
+        processors:
+          [
+            resourcedetection,
+            transform/drop_unneeded_resource_attributes,
+            batch,
+          ]
+        exporters: [otlphttp/grafana_cloud]
+#### finished
+
+    
+   #   logs:
+   #     exporters:
+   #       - debug
+   #     processors:
+   ##       - memory_limiter
+   #       - batch
+   #     receivers:
+   #       - otlp
+   #   metrics:
+   #     exporters:
+   #       - debug
+   #     processors:
+   #       - memory_limiter
+   #       - batch
+   #     receivers:
+   #       - otlp
+   #       # if internalTelemetryViaOTLP.metrics.enabled = true, prometheus receiver will be removed
+   #       - prometheus
+   #   traces:
+   #     exporters:
+   #       - debug
+   #     processors:
+   #       - memory_limiter
+   ##       - batch
+    #    receivers:
+    #      - otlp
+    ##      - jaeger
+     #     - zipkin
 
 # Helm currently has an issue (https://github.com/helm/helm/pull/12879) when using null to remove
 # default configuration from a subchart. The result is that you cannot remove default configuration
