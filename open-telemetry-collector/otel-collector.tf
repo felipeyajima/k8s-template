@@ -33,10 +33,5 @@ resource "helm_release" "otel-collector" {
     value = var.grafana_cloud_api_key
   }
 
-  #set {
-  #  name  = "command.name"
-  #  value = "otelcol-contrib"
-  #}
-
 
 }
