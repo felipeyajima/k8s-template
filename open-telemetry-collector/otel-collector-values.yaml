@@ -225,6 +225,12 @@ config:
           endpoint: ${env:MY_POD_IP}:4317
         http:
           endpoint: ${env:MY_POD_IP}:4318
+    hostmetrics:
+    # Optional. Host Metrics Receiver added as an example of Infra Monitoring capabilities of the OpenTelemetry Collector
+    # https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/hostmetricsreceiver
+      scrapers:
+        load:
+        memory:
     # if internalTelemetryViaOTLP.metrics.enabled = true, prometheus receiver will be removed
     prometheus:
       config:
