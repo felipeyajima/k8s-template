@@ -248,7 +248,8 @@ imagePullSecrets: []
 
 # OpenTelemetry Collector executable
 command:
-  name: "otelcol-k8s"
+  #name: "otelcol-k8s"
+  name: ""
   extraArgs: []
 
 serviceAccount:
