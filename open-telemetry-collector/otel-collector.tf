@@ -18,7 +18,7 @@ resource "helm_release" "otel-collector" {
   }
   set {
     name  = "config.exporters.otlphttp/grafana_cloud.endpoint"
-    value = "https://otlp-gateway-prod-sa-east-1.grafana.net/otlp:443"
+    value = "https://otlp-gateway-prod-sa-east-1.grafana.net/otlp"
   }
   set {
     name  = "config.exporters.otlphttp/grafana_cloud.auth.authenticator"
