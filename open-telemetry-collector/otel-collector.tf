@@ -26,11 +26,11 @@ resource "helm_release" "otel-collector" {
   }
   set {
     name  = "config.extensions.basicauth/grafana_cloud.client_auth.username"
-    value = base64decode(var.grafana_cloud_instance_id)
+    value = grafana_cloud_instance_id = base64decode(var.grafana_cloud_instance_id)
   }
   set {
     name  = "config.extensions.basicauth/grafana_cloud.client_auth.password"
-    value = base64decode(var.grafana_cloud_api_key)
+    value = grafana_cloud_api_key = base64decode(var.grafana_cloud_api_key)
   }
 
 
